@@ -16,9 +16,12 @@ y = dataset.iloc[:, -1].values
 # Encoding categorical data
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
+
+#encodes + drops dummy variable to rid of linear dependence
 ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(drop = 'first'), [3])], remainder='passthrough')
 X = np.array(ct.fit_transform(X))
 
+#make sure every point in matrix is a float
 X = np.array(X, dtype=np.float64)
 y = np.array(y, dtype=np.float64)
 
