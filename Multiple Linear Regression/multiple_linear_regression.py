@@ -34,3 +34,7 @@ y_pred = b_elim(X_train, y_train, X_test)
 #prints the prediction vs actual values
 for pred, actual in zip(y_pred.flatten(), y_test.flatten()):
     print(f"Predicted: {pred:.2f}, Actual: {actual:.2f}")
+
+#pedict random values (remember to drop first dummy variable)
+y_pred = b_elim(X_train, y_train, [[0, 1, 160000, 130000, 300000]])
+print(y_pred)
