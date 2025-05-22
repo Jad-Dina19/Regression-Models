@@ -5,8 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from Backward_elimination import p_value
-from Backward_elimination import b_elim
+from Backward_elimination import MultipleLinearRegression
 # Importing the dataset
 dataset = pd.read_csv('50_Startups.csv')
 X = dataset.iloc[:, :-1].values
@@ -29,12 +28,16 @@ y = np.array(y, dtype=np.float64)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
 
 # Predicting the Test set results
-y_pred = b_elim(X_train, y_train, X_test)
+regressor = MultipleLinearRegression(0.05)
+regressor.fit(X_train, y_train)
 
 #prints the prediction vs actual values
+y_pred = regressor.predict(X_test)
+
+#predict a random value
+print(regressor.predict([[0, 1, 160000, 130000, 300000]]))
+
 for pred, actual in zip(y_pred.flatten(), y_test.flatten()):
     print(f"Predicted: {pred:.2f}, Actual: {actual:.2f}")
 
-#pedict random values (remember to drop first dummy variable)
-y_pred = b_elim(X_train, y_train, [[0, 1, 160000, 130000, 300000]])
-print(y_pred)
+
