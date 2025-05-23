@@ -19,7 +19,7 @@ regressor.fit(X, y)
 #predict y values
 y_pred = regressor.predict(X)
 
-print(regressor.predict([10]))
+print(regressor.predict([6.5]))
 
 # Visualising the Linear Regression results
 plt.scatter(X, y, color = 'red')
