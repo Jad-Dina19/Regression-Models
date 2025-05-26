@@ -3,7 +3,7 @@ from scipy import stats
 
 class MultipleLinearRegression:
 
-    def __init__(self, statistical_sig):
+    def __init__(self, statistical_sig = 0.05):
         self.statistical_sig = statistical_sig
         self.regressor = None
         self.removed = None

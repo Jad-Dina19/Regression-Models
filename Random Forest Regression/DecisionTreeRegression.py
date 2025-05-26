@@ -1,7 +1,7 @@
 
 import numpy as np
 from pprint import pprint
-
+import time
 class DecisionTreeRegressor:
     def __init__(self, min_num_samples = 2, max_depth = 5, min_mse_decrease = 1e-7):
         self.min_num_samples = min_num_samples
@@ -11,7 +11,11 @@ class DecisionTreeRegressor:
     
     def fit(self, X, y):
         #builds regression model for specific data
+        start_time = time.time()  
         self.tree = self.decision_tree(X, y, depth=0)
+        end_time = time.time()  # End timing
+        print(f"[DEBUG] build_tree took {end_time - start_time:.4f} seconds")
+
         #returns tree 
     def get_tree(self):
         return self.tree
@@ -28,6 +32,7 @@ class DecisionTreeRegressor:
         return np.mean((y - np.mean(y))**2)
 
     def best_split(self, X, y):
+        
         num_samples, num_features = X.shape
         current_mse = self.mse(y)
         #start at infinity
@@ -46,13 +51,10 @@ class DecisionTreeRegressor:
                     continue
                 
                 threshold = (X_sorted[i, feature] + X_sorted[(i - 1), feature]) / 2
-                #created mask split
-                X_left = X_sorted[:, feature] <= threshold
-                X_right = ~X_left
-
+            
                 #split y into left and right using mask
-                y_left = y_sorted[X_left]
-                y_right = y_sorted[X_right]
+                y_left = y_sorted[:i]
+                y_right = y_sorted[i:]
 
                 #calculate mse for split
                 left_mse = self.mse(y_left)
@@ -66,7 +68,7 @@ class DecisionTreeRegressor:
                     best_mse = weighted_mse
                     best_feature = feature
                     best_threshold = threshold
-    
+        
         return best_feature, best_threshold
     
     def decision_tree(self, X, y, depth):

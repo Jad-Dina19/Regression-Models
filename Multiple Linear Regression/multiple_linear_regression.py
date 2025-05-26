@@ -7,18 +7,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from Backward_elimination import MultipleLinearRegression
 # Importing the dataset
-dataset = pd.read_csv('50_Startups.csv')
+dataset = pd.read_csv('Data.csv')
 X = dataset.iloc[:, :-1].values
 y = dataset.iloc[:, -1].values
 
-
-# Encoding categorical data
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
-
-#encodes + drops dummy variable to rid of linear dependence
-ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(drop = 'first'), [3])], remainder='passthrough')
-X = np.array(ct.fit_transform(X))
 
 #make sure every point in matrix is a float
 X = np.array(X, dtype=np.float64)
@@ -28,16 +20,14 @@ y = np.array(y, dtype=np.float64)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
 
 # Predicting the Test set results
-regressor = MultipleLinearRegression(0.05)
+regressor = MultipleLinearRegression()
 regressor.fit(X_train, y_train)
 
 #prints the prediction vs actual values
 y_pred = regressor.predict(X_test)
+np.set_printoptions(precision=2)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
 
-#predict a random value
-print(regressor.predict([[0, 1, 160000, 130000, 300000]]))
-
-for pred, actual in zip(y_pred.flatten(), y_test.flatten()):
-    print(f"Predicted: {pred:.2f}, Actual: {actual:.2f}")
-
+from sklearn.metrics import r2_score
+print(r2_score(y_test, y_pred))
 
