@@ -13,7 +13,7 @@ class LinearRegression:
         #size of the dataset
         m = X.shape[0]
         #write theta 
-        theta = np.random.randn(2, 1)   #randomly initialize theta for random guess
+        theta = np.random.randn(X.shape[0] + 1, 1)   #randomly initialize theta for random guess
         #write the X bias term
         X_bias = np.c_[np.ones([m, 1]), X]
 
